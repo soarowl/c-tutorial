@@ -456,14 +456,46 @@ struct 结构体名 {
 };
 ```
 
-例如，定义一个包含两个整型变量的结构体`Person`，可以这样写：
++ 定义结构体：首先，需要定义一个结构体来表示学生的信息。例如，一个学生可能包含姓名、学号和成绩等信息。可以这样定义：
+    ```c
+    struct Student {
+        char name[50];
+        int id;
+        float grade;
+    };
+    ```
++ 创建结构体变量：定义了结构体之后，就可以创建结构体变量来存储具体的学生信息。例如：
+    
+    ```c struct Student student1;```
 
-```c
-struct Person {
-    int age;
-    char name[20];
-};
-```
++ 访问结构体成员：可以通过.运算符来访问结构体的成员。例如，可以这样为`student1`赋值：
+
+    ```c
+    strcpy(student1.name, "张三");
+    student1.id = 12345;
+    student1.grade = 89.5;
+    ```
++ 使用结构体数组：如果需要存储多个学生的信息，可以使用结构体数组。例如，可以创建一个包含100个学生的数组：
+
+    ```c struct Student students[100];```
+
++ 传递结构体给函数：可以将结构体作为参数传递给函数。例如，可以定义一个函数来打印学生的信息：
+
+    ```c
+    void printStudentInfo(struct Student student) {
+        printf("Name: %s", student.name);
+        printf("ID: %d", student.id);
+        printf("Grade: %.2f", student.grade);
+    }
+    ```
+
++ 动态分配结构体：可以使用`malloc`或`calloc`函数来动态分配结构体的内存。例如，可以这样创建一个动态的学生数组：
+    
+    ```c
+    struct Student *students = (struct Student *)malloc(100 * sizeof(struct Student));
+    ```
+
+通过以上介绍，可以看出结构体是C语言中一种非常有用的特性，它允许将相关的数据组合在一起，提高了代码的可读性和可维护性。
 
 == 指针和数组
 
