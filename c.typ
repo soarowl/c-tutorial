@@ -531,6 +531,8 @@ int main() {
 
 在上面的示例中，我们定义了一个名为`Data`的联合体，它包含了一个整数、一个浮点数和一个字符数组。然后，我们在`main`函数中使用这个联合体来存储不同类型的数据。需要注意的是，由于联合体的所有成员共享同一块内存空间，所以只能同时访问其中的一个成员。
 
+当我们将整数赋值给`data.i`时，浮点数和字符数组的值将被覆盖。同样地，当我们将浮点数赋值给`data.f`时，整数和字符数组的值将被覆盖。因此，在使用联合体时需要小心，确保不会意外地覆盖其他成员的值。
+
 == 指针和数组
 
 在C语言中，指针和数组是两种不同的数据类型，但它们之间存在一些相似之处。指针和数组都可以用来存储多个相同数据类型的元素。指针和数组都可以通过下标来访问其中的元素。
@@ -602,6 +604,130 @@ int sumArray(int arr[], int size) {
 ```c
 char str[6] = "Hello";
 ```
+
++ 声明和初始化字符串：可以使用字符数组来声明和初始化字符串。例如：
+        
+    ```c
+    char str1[20] = "Hello, world!";
+    char str2[] = "Hello, world!";
+    ```
++ 获取字符串长度：可以使用`strlen`函数来获取字符串的长度（不包括空字符）。例如：
+        
+    ```c
+    char str[] = "Hello, world!";
+    int length = strlen(str);
+    printf("Length: %d", length);
+    ```
++ 连接字符串：可以使用`strcat`函数来连接两个字符串。例如：
+
+    ```c
+    char str1[20] = "Hello";
+    char str2[] = ", world!";
+    strcat(str1, str2);
+    printf("Concatenated string: %s", str1);
+    ```
++ 比较字符串：可以使用`strcmp`函数来比较两个字符串。例如：
+
+    ```c
+    char str1[] = "apple";
+    char str2[] = "banana";
+    int result = strcmp(str1, str2);
+    if (result < 0) {
+        printf("%s comes before %s", str1, str2);
+    } else if (result > 0) {
+        printf("%s comes after %s", str1, str2);
+    } else {
+        printf("%s and %s are equal", str1, str2);
+    }
+    ```
+
++ 复制字符串：可以使用`strcpy`函数来复制一个字符串。例如：
+
+    ```c
+    #include <stdio.h>
+    #include <string.h>
+
+    int main() {
+        char source[] = "Hello, world!";
+        char destination[20];
+
+        // 使用strcpy函数复制字符串
+        strcpy(destination, source);
+
+        printf("Source string: %s", source);
+        printf("Destination string: %s", destination);
+
+        return 0;
+    }
+    ```
+
+    在上面的示例中，我们声明了两个字符数组`source`和`destination`。然后，我们使用`strcpy`函数将`source`字符串复制到`destination`字符串中。最后，我们打印出源字符串和目标字符串的内容。
+
+    需要注意的是，`strcpy`函数不会检查目标字符串的大小，因此在使用它时需要确保目标字符串有足够的空间来存储源字符串的内容。否则，可能会导致缓冲区溢出错误。为了避免这种情况，可以使用`strncpy`函数，它可以指定要复制的最大字符数。
+
++ 查找字符串：可以使用`strchr`函数来查找字符串中的特定字符或字符串。例如：
+
+    ```c
+    char str[] = "Hello, world!";
+    char target = 'o';
+
+    // 使用strchr函数查找目标字符
+    char *result = strchr(str, target);
+
+    if (result != NULL) {
+        printf("Character '%c' found at position %ld", target, result - str);
+    } else {
+            printf("Character '%c' not found", target);
+    }
+    ```
+
+    在上面的示例中，我们声明了一个字符数组`str`和一个目标字符`target`。然后，我们使用`strchr`函数在`str`中查找`target`字符的第一次出现位置。如果找到了目标字符，`strchr`函数将返回一个指向该字符的指针；否则，它将返回`NULL`。最后，我们根据查找结果打印相应的信息。
+
+    需要注意的是，`strchr`函数是区分大小写的，因此如果要进行不区分大小写的查找，可以使用`strcasestr`函数。
+
++ 查找子串：可以使用`strstr`函数来查找一个字符串是否包含另一个字符串。例如：
+
+    ```c
+    char str[] = "Hello, world!";
+    char substr[] = "world";
+    char *result = strstr(str, substr);
+    if (result != NULL) {
+        printf("Substring found at position %ld", result - str);
+    } else {
+        printf("Substring not found");
+    }
+    ```
+
++ 分割字符串：可以使用`strtok`函数来分割字符串。例如：
+        
+    ```c
+    char str[] = "apple,banana,orange";
+    char delimiter[] = ",";
+    char *token = strtok(str, delimiter);
+    while (token != NULL) {
+        printf("%s", token);
+        token = strtok(NULL, delimiter);
+    }
+    ```
+
++ 格式化字符串：可以使用`sprintf`函数来格式化字符串。例如：
+  
+    ```c
+    char str[50];
+    int num = 42;
+    float pi = 3.14159;
+
+    // 使用sprintf函数将数据写入字符串
+    sprintf(str, "The answer is %d and the value of pi is %.2f", num, pi);
+
+    printf("Formatted string: %s", str);
+    ```
+
+    在上面的示例中，我们声明了一个字符数组`str`和两个变量`num`和`pi`。然后，我们使用`sprintf`函数将`num`和`pi`的值以指定的格式写入`str`字符串中。最后，我们打印出格式化后的字符串。
+
+    需要注意的是，`sprintf`函数不会检查目标字符串的大小，因此在使用它时需要确保目标字符串有足够的空间来存储格式化后的数据。否则，可能会导致缓冲区溢出错误。为了避免这种情况，可以使用`snprintf`函数，它可以指定要写入的最大字符数。
+
+通过以上示例，可以看出C语言提供了丰富的字符串处理功能，可以方便地对字符串进行各种操作。然而，需要注意的是，在使用这些函数时需要包含相应的头文件，如`<string.h>`。
 
 == 文件操作
 
