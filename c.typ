@@ -742,3 +742,141 @@ FILE *fopen(char *filename, char *mode);
 ```c
 FILE *file = fopen("example.txt", "r");
 ```
+
++ 逐字显示文件内容
+
+    ```c
+    #include <stdio.h>
+
+    int main() {
+        FILE *file;
+        char filename[] = "example.txt";
+        char ch;
+
+        // 打开文件
+        file = fopen(filename, "r");
+        if (file == NULL) {
+            printf("无法打开文件 %s", filename);
+            return 1;
+        }
+
+        // 逐字符读取文件内容并打印
+        while ((ch = fgetc(file)) != EOF) {
+            putchar(ch);
+        }
+
+        // 关闭文件
+        fclose(file);
+
+        return 0;
+    }
+    ```
+
+    在上面的示例中，我们首先声明了一个`FILE`指针变量`file`和一个字符数组`filename`，用于存储要读取的文件名。然后，我们使用`fopen`函数以只读模式打开文件，并将返回的文件指针赋值给`file`。如果文件打开失败，`fopen`函数将返回`NULL`，我们可以检查这种情况并打印错误信息。
+
+    接下来，我们使用`fgetc`函数逐字符读取文件内容，并将其打印到屏幕上。当读取到文件末尾时，`fgetc`函数将返回`EOF`（End of File），我们可以使用这个条件来结束循环。
+
+    最后，我们使用`fclose`函数关闭文件。这是一个良好的编程习惯，可以确保释放文件资源并避免潜在的错误。
+
+    需要注意的是，在使用文件操作函数时，需要包含相应的头文件，如`<stdio.h>`。此外，还需要处理可能出现的错误情况，如文件不存在或无法打开等。
+
++ 逐行显示文件内容
+
+    ```c
+    #include <stdio.h>
+
+    int main() {
+        FILE *file;
+        char filename[] = "example.txt";
+        char line[100];
+
+        // 打开文件
+        file = fopen(filename, "r");
+        if (file == NULL) {
+            printf("无法打开文件 %s", filename);
+            return 1;
+        }
+
+        // 逐行读取文件内容并打印
+        while (fgets(line, sizeof(line), file) != NULL) {
+            printf("%s", line);
+        }
+
+        // 关闭文件
+        fclose(file);
+
+        return 0;
+    }
+    ```
+
+== socket编程
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <arpa/inet.h>
+#include <sys/socket.h>
+
+int main() {
+    int server_sock, client_sock;
+    struct sockaddr_in server_addr, client_addr;
+    socklen_t client_addr_size;
+    char buffer[1024];
+
+    // 创建套接字
+    server_sock = socket(PF_INET, SOCK_STREAM, 0);
+    if (server_sock == -1) {
+        perror("socket");
+        exit(1);
+    }
+
+    // 配置服务器地址
+    memset(&server_addr, 0, sizeof(server_addr));
+    server_addr.sin_family = AF_INET;
+    server_addr.sin_addr.s_addr = htonl(INADDR_ANY);
+    server_addr.sin_port = htons(12345);
+
+    // 绑定套接字
+    if (bind(server_sock, (struct sockaddr *)&server_addr, sizeof(server_addr)) == -1) {
+        perror("bind");
+        exit(1);
+    }
+
+    // 监听连接
+    if (listen(server_sock, 5) == -1) {
+        perror("listen");
+        exit(1);
+    }
+
+    // 接受客户端连接
+    client_addr_size = sizeof(client_addr);
+    client_sock = accept(server_sock, (struct sockaddr *)&client_addr, &client_addr_size);
+    if (client_sock == -1) {
+        perror("accept");
+        exit(1);
+    }
+
+    // 接收并发送数据
+    while (1) {
+        ssize_t recv_len = recv(client_sock, buffer, sizeof(buffer) - 1, 0);
+        if (recv_len <= 0) {
+            break;
+        }
+        buffer[recv_len] = '\0';
+        printf("Received: %s", buffer);
+        send(client_sock, buffer, recv_len, 0);
+    }
+
+    // 关闭套接字
+    close(client_sock);
+    close(server_sock);
+
+    return 0;
+}
+```
+
+在上面的示例中，我们首先创建了一个套接字，并将其绑定到本地地址和指定端口上。然后，我们开始监听连接请求，并在接收到客户端连接后，使用recv函数接收数据，并使用send函数将数据发送回客户端。最后，我们关闭了套接字。
+
+需要注意的是，在使用套接字进行网络编程时，需要包含相应的头文件，如`<sys/socket.h>`、`<netinet/in.h>`等。此外，还需要处理可能出现的错误情况，如套接字创建失败、绑定失败、监听失败等。
