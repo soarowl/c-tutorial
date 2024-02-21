@@ -210,6 +210,48 @@ int main() {
 
 这个例子中，程序使用for语句输出0到9的数字。当i是偶数时，程序执行到continue语句，跳过本次循环的剩余部分，直接进入下一次循环。因此，程序只输出奇数0到9的数字。
 
+== switch语句
+
+在C语言中，switch语句用于根据表达式的值选择执行不同的代码块。它的基本语法如下：
+
+```c
+switch (表达式) {
+    case 常量1:
+        // 当表达式的值等于常量1时执行的代码
+        break;
+    case 常量2:
+        // 当表达式的值等于常量2时执行的代码
+        break;
+    ...
+    default:
+        // 当表达式的值不等于任何常量时执行的代码
+}
+```
+    
+其中，case关键字后面跟着一个常量，表示当表达式的值等于该常量时要执行的代码。break关键字用于跳出switch语句，如果没有break，程序会继续执行下一个case的代码。default关键字表示当表达式的值不等于任何常量时要执行的代码。例如：
+
+```c
+#include <stdio.h>
+
+int main() {
+    int num = 2;
+    switch (num) {
+        case 1:
+            printf("num等于1");
+            break;
+        case 2:
+            printf("num等于2");
+            break;
+        case 3:
+            printf("num等于3");
+            break;
+        default:
+            printf("num不等于1、2、3");
+    }
+    return 0;
+}
+```
+
 == 函数
 
 在C语言中，函数是指一组语句的集合，用于完成特定的任务。函数的基本语法如下：
