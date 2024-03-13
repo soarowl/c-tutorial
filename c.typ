@@ -809,6 +809,28 @@ FILE *file = fopen("example.txt", "r");
     }
     ```
 
++ 写文件
+
+    ```c
+    #include <stdio.h>
+
+    int main(int argc, char const *argv[])
+    {
+        FILE *file;
+        file = fopen("score.txt", "w");
+        if (file == NULL)
+        {
+            printf("Error opening file!\n");
+            return 1;
+        }
+        fputs("张三 80 85 90 88 75", file);
+        fputs("李四 82 80 92 83 70", file);
+
+        fclose(file);
+        return 0;
+    }
+    ```
+
 == socket编程
 
 ```c
