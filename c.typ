@@ -823,8 +823,8 @@ FILE *file = fopen("example.txt", "r");
             printf("Error opening file!\n");
             return 1;
         }
-        fputs("张三 80 85 90 88 75", file);
-        fputs("李四 82 80 92 83 70", file);
+        fputs("张三 80 85 90 88 75\n", file);
+        fputs("李四 82 80 92 83 70\n", file);
 
         fclose(file);
         return 0;
